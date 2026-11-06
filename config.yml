@@ -1,0 +1,62 @@
+version: "2"
+linters:
+  default: none
+  exclusions:
+    paths:
+      - '.*_test\.go$'
+  enable:
+    # Early return and nesting
+    - revive
+    - nestif
+    - cyclop
+    - gocognit
+
+    # Redundant logic
+    - dupl
+    - unparam
+    - unused
+    - unconvert
+    - ineffassign
+
+    # Safe and correct
+    - errcheck
+    - errorlint
+    - nilerr
+    - govet
+    - staticcheck
+    - gosec
+
+    # Network and database calls
+    - bodyclose
+    - noctx
+    - sqlclosecheck
+    - rowserrcheck
+
+    # Naming and custom rules
+    - gocritic
+
+  settings:
+    revive:
+      rules:
+        - name: max-control-nesting
+          arguments: [2]
+        - name: early-return
+        - name: indent-error-flow
+        - name: superfluous-else
+        - name: var-naming
+        - name: confusing-naming
+        - name: import-shadowing
+    nestif:
+      min-complexity: 3
+    cyclop:
+      max-complexity: 8
+    gocognit:
+      min-complexity: 10
+    dupl:
+      threshold: 30
+    gocritic:
+      enabled-tags: [diagnostic, style]
+      settings:
+        ruleguard:
+          rules: "${base-path}/rules/rules.go"
+          failOn: all
